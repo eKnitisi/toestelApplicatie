@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "549597755348",
+    "project_id": "intromobiletoestelapp",
+    "storage_bucket": "intromobiletoestelapp.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549597755348:android:d123dfff97c04a64608841",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_intro_mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNqenDIfNbLm4QBxMe3nSXyh53YRi62I0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
