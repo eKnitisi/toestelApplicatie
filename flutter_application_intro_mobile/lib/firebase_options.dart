@@ -73,4 +73,5 @@ class DefaultFirebaseOptions {
     storageBucket: 'intromobiletoestelapp.firebasestorage.app',
     measurementId: 'G-HE0F8G3ZV5',
   );
+
 }

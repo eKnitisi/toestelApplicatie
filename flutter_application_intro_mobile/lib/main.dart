@@ -1,6 +1,13 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_application_intro_mobile/firebase_options.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Nodig voor async init
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform, // <-- hier!
+  );
   runApp(const MyApp());
 }
 
@@ -32,6 +39,27 @@ class MyApp extends StatelessWidget {
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
+  }
+}
+
+Future<void> _registerTestUser() async {
+  const email = 'test@example.com';
+  const password = 'superSecret123';
+
+  try {
+    final credential = await FirebaseAuth.instance
+        .createUserWithEmailAndPassword(email: email, password: password);
+    print('Geregistreerd: ${credential.user?.email}');
+  } on FirebaseAuthException catch (e) {
+    if (e.code == 'weak-password') {
+      print('Wachtwoord is te zwak.');
+    } else if (e.code == 'email-already-in-use') {
+      print('Dit e-mailadres is al in gebruik.');
+    } else {
+      print('Fout: ${e.code}');
+    }
+  } catch (e) {
+    print('Algemene fout: $e');
   }
 }
 
@@ -113,10 +141,10 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+        onPressed: _registerTestUser, // ← registreer testuser
+        tooltip: 'Register',
+        child: const Icon(Icons.person_add),
+      ),
     );
   }
 }
