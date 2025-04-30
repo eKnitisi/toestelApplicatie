@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_intro_mobile/Screens/add_rental_screen.dart';
 import 'package:flutter_application_intro_mobile/Widgets/map_page.dart';
 import '../Services/auth_service.dart';
 
@@ -11,14 +12,6 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,9 +25,12 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             ElevatedButton(
               onPressed: () {
-                Navigator.pushNamed(context, '/screen1');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddRentalScreen()),
+                );
               },
-              child: const Text("Go to Screen 1"),
+              child: const Text("add an appliance to rent"),
             ),
             ElevatedButton(
               onPressed: () {
