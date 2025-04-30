@@ -21,7 +21,7 @@ class AuthService {
         ),
       );
     } on FirebaseAuthException catch (e) {
-      _handleError(e);
+      _handleError(e, context);
     }
   }
 
@@ -42,7 +42,7 @@ class AuthService {
         ),
       );
     } on FirebaseAuthException catch (e) {
-      _handleError(e);
+      _handleError(e, context);
     }
   }
 
@@ -54,22 +54,22 @@ class AuthService {
     );
   }
 
-  static void _handleError(FirebaseAuthException e) {
+  static void _handleError(FirebaseAuthException e, BuildContext context) {
+    String message;
+
     switch (e.code) {
       case 'user-not-found':
-        print('No user found for that email.');
+        message = 'no user found for that email.';
         break;
       case 'wrong-password':
-        print('Wrong password provided.');
-        break;
-      case 'weak-password':
-        print('Password is too weak.');
-        break;
-      case 'email-already-in-use':
-        print('Email already in use.');
+        message = 'password is wrong.';
         break;
       default:
-        print('Auth Error: ${e.message}');
+        message = 'error: ${e.message}';
     }
+
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 }

@@ -29,10 +29,23 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('You have pushed the button this many times:'),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/screen1');
+              },
+              child: const Text("Go to Screen 1"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/screen2');
+              },
+              child: const Text("Go to Screen 2"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushNamed(context, '/screen3');
+              },
+              child: const Text("Go to Screen 3"),
             ),
           ],
         ),
