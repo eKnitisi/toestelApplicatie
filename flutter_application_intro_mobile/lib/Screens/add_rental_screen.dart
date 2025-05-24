@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../Widgets/base_scaffold.dart';
 import '../Widgets/date_picker.dart';
+import '../models/device_model.dart';
+import '../Services/auth_service.dart';
 
 class AddRentalScreen extends StatefulWidget {
   const AddRentalScreen({super.key});
@@ -32,6 +35,7 @@ class _AddRentalScreenState extends State<AddRentalScreen> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _locationController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
+  final TextEditingController _imageUrlController = TextEditingController();
 
   Future<void> _pickFromDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -43,6 +47,9 @@ class _AddRentalScreenState extends State<AddRentalScreen> {
     if (picked != null && picked != _availableFrom) {
       setState(() {
         _availableFrom = picked;
+        if (_availableTo != null && _availableTo!.isBefore(picked)) {
+          _availableTo = null;
+        }
       });
     }
   }
@@ -58,6 +65,77 @@ class _AddRentalScreenState extends State<AddRentalScreen> {
       setState(() {
         _availableTo = picked;
       });
+    }
+  }
+
+  void _submitForm() async {
+    if (!_formKey.currentState!.validate()) {
+      return;
+    }
+
+    if (_availableFrom == null || _availableTo == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please select both availability dates')),
+      );
+      return;
+    }
+
+    if (_availableTo!.isBefore(_availableFrom!)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Available To date must be after Available From date'),
+        ),
+      );
+      return;
+    }
+
+    final double? price = double.tryParse(_priceController.text.trim());
+    if (price == null || price <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter a valid price')),
+      );
+      return;
+    }
+
+    final currentUser = await AuthService.getCurrentUser();
+    if (currentUser == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('User not logged in')));
+      return;
+    }
+
+    final imageUrl =
+        _imageUrlController.text.trim().isNotEmpty
+            ? _imageUrlController.text.trim()
+            : 'https://via.placeholder.com/150';
+
+    final device = DeviceModel(
+      id: '', // Will be set by Firestore doc ID
+      title: _titleController.text.trim(),
+      description: _descriptionController.text.trim(),
+      category: _selectedCategory!,
+      location: _locationController.text.trim(),
+      pricePerDay: price,
+      imageUrl: imageUrl,
+      ownerId: currentUser.uid,
+      availableFrom: _availableFrom!,
+      availableTo: _availableTo!,
+    );
+
+    try {
+      final docRef = FirebaseFirestore.instance.collection('devices').doc();
+      await docRef.set(device.toMap());
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Device added successfully!')),
+      );
+
+      Navigator.pushNamedAndRemoveUntil(context, '/home', (route) => false);
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Failed to add device: $e')));
     }
   }
 
@@ -81,9 +159,10 @@ class _AddRentalScreenState extends State<AddRentalScreen> {
               _buildTextField(_locationController, 'Location'),
               _buildTextField(
                 _priceController,
-                'Price per day',
+                'Price per day (€)',
                 keyboardType: TextInputType.number,
               ),
+              _buildTextField(_imageUrlController, 'Image URL (optional)'),
               DropdownButtonFormField<String>(
                 decoration: const InputDecoration(
                   labelText: 'Category',
@@ -107,31 +186,22 @@ class _AddRentalScreenState extends State<AddRentalScreen> {
                         value == null ? 'Please select a category' : null,
               ),
               const SizedBox(height: 16),
-
               DatePickerField(
                 label: 'Available From',
                 date: _availableFrom,
                 onTap: () => _pickFromDate(context),
               ),
-
               DatePickerField(
                 label: 'Available To',
                 date: _availableTo,
                 onTap: () => _pickToDate(context),
               ),
-              const SizedBox(height: 16),
-
               const SizedBox(height: 24),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    // Will save to Firebase later
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Form is valid!')),
-                    );
-                  }
-                },
-                child: const Text('Submit'),
+              Center(
+                child: ElevatedButton(
+                  onPressed: _submitForm,
+                  child: const Text('Submit'),
+                ),
               ),
             ],
           ),
