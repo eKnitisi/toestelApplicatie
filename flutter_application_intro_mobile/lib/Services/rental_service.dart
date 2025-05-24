@@ -32,4 +32,15 @@ class RentalService {
         .doc(reservation.id)
         .update(reservation.toMap());
   }
+
+  static Future<List<ReservationModel>> getAllRentals() async {
+    final querySnapshot = await _reservationsCollection.get();
+
+    return querySnapshot.docs.map((doc) {
+      return ReservationModel.fromMap(
+        doc.id,
+        doc.data() as Map<String, dynamic>,
+      );
+    }).toList();
+  }
 }

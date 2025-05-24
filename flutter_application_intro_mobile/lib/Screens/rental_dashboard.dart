@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_intro_mobile/Widgets/listing_tab.dart';
+import 'package:flutter_application_intro_mobile/Widgets/rent_request_tab.dart';
 import 'package:flutter_application_intro_mobile/Widgets/rental_tab.dart';
 import '../Widgets/base_scaffold.dart';
 
@@ -19,12 +20,12 @@ class RentalDashboard extends StatelessWidget {
               tabs: [
                 Tab(text: "My Listings"),
                 Tab(text: "My Rentals"),
-                Tab(text: "History"),
+                Tab(text: "Rent Requests"),
               ],
             ),
             Expanded(
               child: TabBarView(
-                children: [ListingsTab(), RentalsTab(), HistoryTab()],
+                children: [ListingsTab(), RentalsTab(), RentRequestTab()],
               ),
             ),
           ],
@@ -38,16 +39,5 @@ class RentalDashboard extends StatelessWidget {
         ),
       ),
     );
-  }
-}
-
-// Dummy tabs
-
-class HistoryTab extends StatelessWidget {
-  const HistoryTab({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(child: Text("History"));
   }
 }
