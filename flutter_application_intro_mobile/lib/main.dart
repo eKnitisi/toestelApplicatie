@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_application_intro_mobile/Screens/add_rental_screen.dart';
+import 'package:flutter_application_intro_mobile/Screens/all_listings_screen.dart';
 import 'package:flutter_application_intro_mobile/Screens/home_screen.dart';
 import 'package:flutter_application_intro_mobile/Screens/map_page.dart';
 import 'package:flutter_application_intro_mobile/Screens/rental_dashboard.dart';
@@ -47,6 +48,7 @@ class MyApp extends StatelessWidget {
             (context) => const RentalDashboard(title: 'Rental Dashboard'),
         '/addRental': (context) => const AddRentalScreen(),
         '/map': (context) => const MapPage(),
+        '/allListings': (context) => const ListingsScreen(),
       },
     );
   }

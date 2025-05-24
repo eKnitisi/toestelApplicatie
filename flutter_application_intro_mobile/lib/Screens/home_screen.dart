@@ -16,7 +16,7 @@ class MyHomePage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _buildButton(context, "Add an appliance to rent", () {
+              _buildButton(context, "Add an appliance to rent out", () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -25,7 +25,11 @@ class MyHomePage extends StatelessWidget {
                 );
               }),
               const SizedBox(height: 24),
-              _buildButton(context, "View all rentals on map", () {
+              _buildButton(context, "View all listings", () {
+                Navigator.pushNamed(context, '/allListings');
+              }),
+              const SizedBox(height: 24),
+              _buildButton(context, "View all listings on map", () {
                 Navigator.pushNamed(context, '/map');
               }),
               const SizedBox(height: 24),
