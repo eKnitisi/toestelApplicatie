@@ -1,9 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '../Widgets/base_scaffold.dart';
 import '../Widgets/date_picker.dart';
 import '../models/device_model.dart';
 import '../Services/auth_service.dart';
+import '../Services/device_service.dart'; // DeviceService importeren
 
 class AddRentalScreen extends StatefulWidget {
   const AddRentalScreen({super.key});
@@ -111,7 +111,7 @@ class _AddRentalScreenState extends State<AddRentalScreen> {
             : 'https://via.placeholder.com/150';
 
     final device = DeviceModel(
-      id: '', // Will be set by Firestore doc ID
+      id: '',
       title: _titleController.text.trim(),
       description: _descriptionController.text.trim(),
       category: _selectedCategory!,
@@ -124,8 +124,7 @@ class _AddRentalScreenState extends State<AddRentalScreen> {
     );
 
     try {
-      final docRef = FirebaseFirestore.instance.collection('devices').doc();
-      await docRef.set(device.toMap());
+      await DeviceService.addDevice(device);
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Device added successfully!')),

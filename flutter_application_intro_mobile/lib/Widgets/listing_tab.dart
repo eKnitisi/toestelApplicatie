@@ -1,8 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_application_intro_mobile/Services/auth_service.dart';
-import 'package:flutter_application_intro_mobile/Widgets/image_placeholder.dart';
-import '../models/device_model.dart'; // import your DeviceModel
+import '../Services/auth_service.dart';
+import '../Services/device_service.dart';
+import '../Widgets/image_placeholder.dart';
+import '../models/device_model.dart';
 
 class ListingsTab extends StatefulWidget {
   const ListingsTab({super.key});
@@ -12,7 +12,6 @@ class ListingsTab extends StatefulWidget {
 }
 
 class _ListingsTabState extends State<ListingsTab> {
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   String? _currentUserId;
 
   @override
@@ -36,27 +35,22 @@ class _ListingsTabState extends State<ListingsTab> {
       return const Center(child: CircularProgressIndicator());
     }
 
-    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-      stream:
-          _firestore
-              .collection('devices')
-              .where('ownerId', isEqualTo: _currentUserId)
-              .snapshots(),
+    return FutureBuilder<List<DeviceModel>>(
+      future: DeviceService.getDevices(ownerId: _currentUserId),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
         }
+
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
         }
 
-        final docs = snapshot.data?.docs ?? [];
-        if (docs.isEmpty) {
+        final devices = snapshot.data ?? [];
+
+        if (devices.isEmpty) {
           return const Center(child: Text("You have no listings yet."));
         }
-
-        final devices =
-            docs.map((doc) => DeviceModel.fromMap(doc.id, doc.data())).toList();
 
         return ListView.builder(
           itemCount: devices.length,
@@ -71,7 +65,6 @@ class _ListingsTabState extends State<ListingsTab> {
                         height: 50,
                         fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
-                          // If the URL fails to load, fallback to placeholder
                           return ImagePlaceholder();
                         },
                       )
