@@ -119,6 +119,6 @@ class _RentRequestTabState extends State<RentRequestTab> {
 
 extension DateHelpers on DateTime {
   String toShortDateString() {
-    return "${this.day}/${this.month}/${this.year}";
+    return "$day/$month/$year";
   }
 }

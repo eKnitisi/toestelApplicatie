@@ -34,8 +34,8 @@ class RentalDashboard extends StatelessWidget {
           onPressed: () {
             Navigator.pushNamed(context, "/addRental");
           },
-          child: const Icon(Icons.add),
           tooltip: "Add New Device",
+          child: const Icon(Icons.add),
         ),
       ),
     );

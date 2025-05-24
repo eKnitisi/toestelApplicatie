@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../Services/auth_service.dart';
 
 class RegisterPage extends StatefulWidget {
-  RegisterPage({super.key});
+  const RegisterPage({super.key});
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();

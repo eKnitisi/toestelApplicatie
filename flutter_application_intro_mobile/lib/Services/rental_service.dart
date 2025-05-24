@@ -43,4 +43,20 @@ class RentalService {
       );
     }).toList();
   }
+
+  static Future<List<ReservationModel>> getRentalsForDevice(
+    String deviceId,
+  ) async {
+    final querySnapshot =
+        await _reservationsCollection
+            .where('deviceId', isEqualTo: deviceId)
+            .get();
+
+    return querySnapshot.docs.map((doc) {
+      return ReservationModel.fromMap(
+        doc.id,
+        doc.data() as Map<String, dynamic>,
+      );
+    }).toList();
+  }
 }

@@ -140,6 +140,6 @@ class _RentalDetailScreenState extends State<RentalDetailScreen> {
 
 extension DateHelpers on DateTime {
   String toShortDateString() {
-    return "${this.day}/${this.month}/${this.year}";
+    return "$day/$month/$year";
   }
 }
