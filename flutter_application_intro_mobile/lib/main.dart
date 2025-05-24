@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_application_intro_mobile/Screens/home_screen.dart';
 import 'firebase_options.dart';
 import 'Screens/login_screen.dart';
 
@@ -21,6 +22,12 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
       home: LoginPage(),
+      routes: {
+        '/home': (context) => MyHomePage(title: 'Home'),
+        '/reservations':
+            (context) => const MyHomePage(title: 'My Reservations'),
+        '/dashboard': (context) => const MyHomePage(title: 'Rental Dashboard'),
+      },
     );
   }
 }

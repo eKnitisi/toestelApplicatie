@@ -12,16 +12,12 @@ class AuthService {
     try {
       // VOOR DEBUGGING => HARDCODED LOGIN
       // Auto-login for development
-      if (true) {
-        try {
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
-            email: '123@mail.com',
-            password: 'test123',
-          );
-        } catch (e) {
-          print('Auto login failed: $e');
-        }
-      }
+
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: "123@mail.com",
+        password: "test123",
+      );
+
       /*       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
@@ -29,7 +25,7 @@ class AuthService {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const MyHomePage(title: "ingelogd"),
+          builder: (context) => const MyHomePage(title: "Home"),
         ),
       );
     } on FirebaseAuthException catch (e) {
@@ -50,7 +46,7 @@ class AuthService {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const MyHomePage(title: "ingelogd"),
+          builder: (context) => const MyHomePage(title: "Home"),
         ),
       );
     } on FirebaseAuthException catch (e) {
