@@ -32,10 +32,7 @@ class MyHomePage extends StatelessWidget {
               _buildButton(context, "View all listings on map", () {
                 Navigator.pushNamed(context, '/map');
               }),
-              const SizedBox(height: 24),
-              _buildButton(context, "My Reservations", () {
-                Navigator.pushNamed(context, '/reservations');
-              }),
+
               const SizedBox(height: 24),
               _buildButton(context, "Rental Dashboard", () {
                 Navigator.pushNamed(context, '/dashboard');
