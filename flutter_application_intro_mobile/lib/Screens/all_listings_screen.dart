@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_intro_mobile/Widgets/base_scaffold.dart';
 import '../models/device_model.dart';
 import '../Services/device_service.dart';
+import '../Screens/device_detail_screen.dart';
 
 class ListingsScreen extends StatefulWidget {
   const ListingsScreen({Key? key}) : super(key: key);
@@ -44,15 +45,13 @@ class _ListingsScreenState extends State<ListingsScreen> {
       _loading = true;
     });
     try {
-      final devices =
-          await DeviceService.getDevices(); // zorg dat deze async lijst ophaalt
+      final devices = await DeviceService.getDevices();
       setState(() {
         _allDevices = devices;
         _filteredDevices = devices;
         _loading = false;
       });
     } catch (e) {
-      // Error handling, bv. snackbar
       setState(() {
         _loading = false;
       });
@@ -82,7 +81,6 @@ class _ListingsScreenState extends State<ListingsScreen> {
               )
               .toList();
     }
-
     setState(() {
       _filteredDevices = filtered;
     });
@@ -159,7 +157,15 @@ class _ListingsScreenState extends State<ListingsScreen> {
                                     '${device.category} — ${device.address}',
                                   ),
                                   onTap: () {
-                                    // bv. navigeer naar details scherm
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder:
+                                            (context) => DeviceDetailsScreen(
+                                              device: device,
+                                            ),
+                                      ),
+                                    );
                                   },
                                 );
                               },

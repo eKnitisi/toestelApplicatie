@@ -63,6 +63,19 @@ class BaseScaffold extends StatelessWidget {
               child: const Icon(Icons.home, color: Colors.white),
             ),
           ),
+          Positioned(
+            bottom: 16,
+            left: 16,
+            child: FloatingActionButton(
+              heroTag: 'back_button',
+              mini: true,
+              backgroundColor: Colors.grey.shade600,
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Icon(Icons.arrow_back, color: Colors.white),
+            ),
+          ),
         ],
       ),
       floatingActionButton:
