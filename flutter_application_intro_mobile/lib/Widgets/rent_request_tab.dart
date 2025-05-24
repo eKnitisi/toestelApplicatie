@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_intro_mobile/Screens/device_detail_screen.dart';
+import 'package:flutter_application_intro_mobile/Screens/rental_detail_screen.dart';
 import 'package:flutter_application_intro_mobile/Services/device_service.dart';
 import 'package:flutter_application_intro_mobile/models/device_model.dart';
 import '../Services/auth_service.dart';
 import '../Services/rental_service.dart';
 import '../models/reservation_model.dart';
-import '../Screens/rental_detail_screen.dart';
 
-class RentalsTab extends StatefulWidget {
-  const RentalsTab({super.key});
+class RentRequestTab extends StatefulWidget {
+  const RentRequestTab({super.key});
 
   @override
-  State<RentalsTab> createState() => _RentalsTabState();
+  State<RentRequestTab> createState() => _RentRequestTabState();
 }
 
-class _RentalsTabState extends State<RentalsTab> {
+class _RentRequestTabState extends State<RentRequestTab> {
   String? _currentUserId;
 
   @override
@@ -32,13 +31,15 @@ class _RentalsTabState extends State<RentalsTab> {
     }
   }
 
-  Future<List<Map<String, dynamic>>> _getRentalsWithDevices(
-    String userId,
-  ) async {
-    final rentals = await RentalService.getRentalsForUser(userId);
+  Future<List<Map<String, dynamic>>> _getRentalsForOwner(String ownerId) async {
+    final allRentals =
+        await RentalService.getAllRentals(); // moet een functie zijn die ALLE rentals ophaalt
+    // Filter rentals waar de eigenaar de ingelogde user is
+    final ownerRentals = allRentals.where((r) => r.ownerId == ownerId).toList();
+
     List<Map<String, dynamic>> combinedList = [];
 
-    for (var rental in rentals) {
+    for (var rental in ownerRentals) {
       final device = await DeviceService.getDeviceById(rental.deviceId);
       combinedList.add({'rental': rental, 'device': device});
     }
@@ -52,7 +53,7 @@ class _RentalsTabState extends State<RentalsTab> {
     }
 
     return FutureBuilder<List<Map<String, dynamic>>>(
-      future: _getRentalsWithDevices(_currentUserId!),
+      future: _getRentalsForOwner(_currentUserId!),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Center(child: Text('Error: ${snapshot.error}'));
@@ -64,7 +65,7 @@ class _RentalsTabState extends State<RentalsTab> {
         final rentalsWithDevices = snapshot.data ?? [];
 
         if (rentalsWithDevices.isEmpty) {
-          return const Center(child: Text("You have no rentals yet."));
+          return const Center(child: Text("No rental requests found."));
         }
 
         return ListView.builder(

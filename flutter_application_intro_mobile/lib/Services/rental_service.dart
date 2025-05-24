@@ -19,4 +19,17 @@ class RentalService {
       );
     }).toList();
   }
+
+  static Future<void> createReservation(ReservationModel reservation) async {
+    await _reservationsCollection.add(reservation.toMap());
+  }
+
+  static Future<void> updateReservation(ReservationModel reservation) async {
+    if (reservation.id.isEmpty) {
+      throw Exception('Reservation ID is required for update');
+    }
+    await _reservationsCollection
+        .doc(reservation.id)
+        .update(reservation.toMap());
+  }
 }

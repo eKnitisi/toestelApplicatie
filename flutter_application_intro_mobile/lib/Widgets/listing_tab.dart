@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_intro_mobile/Screens/device_detail_screen.dart';
 import '../Services/auth_service.dart';
 import '../Services/device_service.dart';
 import '../Widgets/image_placeholder.dart';
@@ -74,7 +75,12 @@ class _ListingsTabState extends State<ListingsTab> {
                 "\$${device.pricePerDay.toStringAsFixed(2)} per day",
               ),
               onTap: () {
-                // TODO: Navigate to details or edit page
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => DeviceDetailsScreen(device: device),
+                  ),
+                );
               },
             );
           },
