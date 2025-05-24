@@ -13,7 +13,7 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
-  final LatLng _initialLocation = LatLng(51.219815, 4.415956); // bv. Antwerpen
+  final LatLng _initialLocation = LatLng(51.219815, 4.415956);
   List<DeviceModel> _devices = [];
 
   @override

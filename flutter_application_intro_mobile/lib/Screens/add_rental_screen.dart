@@ -4,7 +4,7 @@ import '../Widgets/base_scaffold.dart';
 import '../Widgets/date_picker.dart';
 import '../models/device_model.dart';
 import '../Services/auth_service.dart';
-import '../Services/device_service.dart'; // DeviceService importeren
+import '../Services/device_service.dart';
 import 'package:latlong2/latlong.dart';
 
 class AddRentalScreen extends StatefulWidget {
@@ -141,7 +141,7 @@ class _AddRentalScreenState extends State<AddRentalScreen> {
       description: _descriptionController.text.trim(),
       category: _selectedCategory!,
       address: _addressController.text.trim(),
-      latitude: _latitude ?? 0.0, // hier gebruik je de echte coords
+      latitude: _latitude ?? 0.0,
       longitude: _longitude ?? 0.0,
       pricePerDay: price,
       imageUrl: imageUrl,
@@ -182,7 +182,7 @@ class _AddRentalScreenState extends State<AddRentalScreen> {
                 'Description',
                 maxLines: 3,
               ),
-              _buildTextField(_addressController, 'Address'),
+              _buildTextField(_addressController, 'Full Address'),
 
               Padding(
                 padding: const EdgeInsets.only(bottom: 16.0),

@@ -66,7 +66,7 @@ class _CreateReservationScreenState extends State<CreateReservationScreen> {
     }
 
     final reservation = ReservationModel(
-      id: '', // Firestore genereert dit
+      id: '',
       deviceId: widget.device.id,
       renterId: user.uid,
       ownerId: widget.device.ownerId,

@@ -20,7 +20,6 @@ class AuthService {
         password: password,
       );
 
-      // Fetch Firestore user document
       DocumentSnapshot<Map<String, dynamic>> doc =
           await _firestore
               .collection('users')
@@ -34,7 +33,6 @@ class AuthService {
         return;
       }
 
-      // Optional: validate fields or assign default roles here
       final data = doc.data()!;
       final userModel = UserModel.fromMap(doc.id, data);
       debugPrint('Logged in user: $userModel');

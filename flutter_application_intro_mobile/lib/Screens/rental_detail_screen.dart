@@ -80,7 +80,6 @@ class _RentalDetailScreenState extends State<RentalDetailScreen> {
     final reservation = widget.reservation;
     final device = widget.device;
 
-    // Wacht tot we de userId hebben geladen
     if (_currentUserId == null) {
       return const Center(child: CircularProgressIndicator());
     }

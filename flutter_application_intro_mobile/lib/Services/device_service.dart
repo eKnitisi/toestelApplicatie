@@ -31,10 +31,8 @@ class DeviceService {
   }
 
   static Future<void> addDevice(DeviceModel device) async {
-    // Genereer nieuwe doc referentie met ID
     final docRef = _devicesCollection.doc();
 
-    // Maak een nieuwe DeviceModel met de gegenereerde ID
     final deviceWithId = DeviceModel(
       id: docRef.id,
       title: device.title,
@@ -50,7 +48,6 @@ class DeviceService {
       availableTo: device.availableTo,
     );
 
-    // Sla het device op in Firestore
     await docRef.set(deviceWithId.toMap());
   }
 

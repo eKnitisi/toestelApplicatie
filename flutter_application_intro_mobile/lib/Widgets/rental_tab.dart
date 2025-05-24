@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_application_intro_mobile/Screens/device_detail_screen.dart';
 import 'package:flutter_application_intro_mobile/Services/device_service.dart';
 import 'package:flutter_application_intro_mobile/models/device_model.dart';
 import '../Services/auth_service.dart';

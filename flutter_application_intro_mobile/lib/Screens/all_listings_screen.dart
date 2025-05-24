@@ -96,53 +96,60 @@ class _ListingsScreenState extends State<ListingsScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 80,
+                      horizontal: 16,
                       vertical: 16,
                     ),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: DropdownButtonFormField<String>(
-                            decoration: const InputDecoration(
-                              labelText: 'Category',
-                              border: OutlineInputBorder(),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        children: [
+                          SizedBox(
+                            width: 200,
+                            child: DropdownButtonFormField<String>(
+                              decoration: const InputDecoration(
+                                labelText: 'Category',
+                                border: OutlineInputBorder(),
+                              ),
+                              value: _selectedCategory ?? 'All',
+                              items:
+                                  _categories
+                                      .map(
+                                        (cat) => DropdownMenuItem<String>(
+                                          value: cat,
+                                          child: Text(
+                                            cat,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      )
+                                      .toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectedCategory = value;
+                                  _applyFilters();
+                                });
+                              },
                             ),
-                            value: _selectedCategory ?? 'All',
-                            items:
-                                _categories
-                                    .map(
-                                      (cat) => DropdownMenuItem<String>(
-                                        value: cat,
-                                        child: Text(cat),
-                                      ),
-                                    )
-                                    .toList(),
-                            onChanged: (value) {
-                              setState(() {
-                                _selectedCategory = value;
+                          ),
+                          const SizedBox(width: 12),
+                          SizedBox(
+                            width: 300,
+                            child: TextField(
+                              decoration: const InputDecoration(
+                                labelText: 'Filter by location',
+                                border: OutlineInputBorder(),
+                              ),
+                              onChanged: (value) {
+                                _locationFilter = value;
                                 _applyFilters();
-                              });
-                            },
-                          ),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          flex: 3,
-                          child: TextField(
-                            decoration: const InputDecoration(
-                              labelText: 'Filter by location',
-                              border: OutlineInputBorder(),
+                              },
                             ),
-                            onChanged: (value) {
-                              _locationFilter = value;
-                              _applyFilters();
-                            },
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
+
                   Expanded(
                     child:
                         _filteredDevices.isEmpty

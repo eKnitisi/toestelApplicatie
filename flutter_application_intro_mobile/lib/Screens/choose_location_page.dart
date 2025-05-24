@@ -24,10 +24,8 @@ class _ChooseLocationState extends State<ChooseLocationPage> {
     bool serviceEnabled;
     LocationPermission permission;
 
-    // Check if location services are enabled.
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      // Location services are not enabled don't continue
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Location services are disabled. Please enable them.'),
@@ -65,7 +63,6 @@ class _ChooseLocationState extends State<ChooseLocationPage> {
       return;
     }
 
-    // Permissions granted, get position
     final position = await Geolocator.getCurrentPosition();
     setState(() {
       _selectedLocation = LatLng(position.latitude, position.longitude);

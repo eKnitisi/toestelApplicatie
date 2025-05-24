@@ -1,5 +1,3 @@
-// lib/models/user_model.dart
-
 class UserModel {
   final String uid;
   final String email;
@@ -17,7 +15,7 @@ class UserModel {
     String safeString(dynamic value) {
       if (value == null) return '';
       if (value is String) return value;
-      return value.toString(); // fallback, just in case
+      return value.toString();
     }
 
     return UserModel(

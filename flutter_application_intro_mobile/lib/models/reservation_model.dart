@@ -5,7 +5,7 @@ class ReservationModel {
   final String ownerId;
   final DateTime startDate;
   final DateTime endDate;
-  final String status; // pending, approved, etc.
+  final String status;
 
   ReservationModel({
     required this.id,

@@ -32,9 +32,7 @@ class _RentRequestTabState extends State<RentRequestTab> {
   }
 
   Future<List<Map<String, dynamic>>> _getRentalsForOwner(String ownerId) async {
-    final allRentals =
-        await RentalService.getAllRentals(); // moet een functie zijn die ALLE rentals ophaalt
-    // Filter rentals waar de eigenaar de ingelogde user is
+    final allRentals = await RentalService.getAllRentals();
     final ownerRentals = allRentals.where((r) => r.ownerId == ownerId).toList();
 
     List<Map<String, dynamic>> combinedList = [];
