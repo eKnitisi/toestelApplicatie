@@ -10,10 +10,22 @@ class AuthService {
     BuildContext context,
   ) async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      // VOOR DEBUGGING => HARDCODED LOGIN
+      // Auto-login for development
+      if (true) {
+        try {
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
+            email: '123@mail.com',
+            password: 'test123',
+          );
+        } catch (e) {
+          print('Auto login failed: $e');
+        }
+      }
+      /*       await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
-      );
+      ); */
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
