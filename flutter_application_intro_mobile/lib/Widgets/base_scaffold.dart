@@ -7,6 +7,7 @@ class BaseScaffold extends StatelessWidget {
   final bool showAppBar;
   final bool showLogout;
   final bool centerTitle;
+  final Widget? floatingActionButton;
 
   const BaseScaffold({
     super.key,
@@ -15,6 +16,7 @@ class BaseScaffold extends StatelessWidget {
     this.showAppBar = true,
     this.showLogout = true,
     this.centerTitle = true,
+    this.floatingActionButton,
   });
 
   static final eggColor = Colors.grey.shade200;
@@ -64,7 +66,8 @@ class BaseScaffold extends StatelessWidget {
         ],
       ),
       floatingActionButton:
-          showLogout
+          floatingActionButton ??
+          (showLogout
               ? FloatingActionButton(
                 backgroundColor: logoutRed,
                 onPressed: () async {
@@ -76,7 +79,7 @@ class BaseScaffold extends StatelessWidget {
                 tooltip: 'Sign Out',
                 child: const Icon(Icons.logout, color: Colors.white),
               )
-              : null,
+              : null),
     );
   }
 }
