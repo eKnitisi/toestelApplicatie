@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_intro_mobile/Widgets/base_scaffold.dart';
 import 'package:flutter_application_intro_mobile/Screens/add_rental_screen.dart';
-import 'package:flutter_application_intro_mobile/Widgets/map_page.dart';
 
 class MyHomePage extends StatelessWidget {
   final String title;
@@ -26,12 +25,12 @@ class MyHomePage extends StatelessWidget {
                 );
               }),
               const SizedBox(height: 24),
-              _buildButton(context, "Browse appliances (Map)", () {
+              /*               _buildButton(context, "Browse appliances (Map)", () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => MapPage()),
                 );
-              }),
+              }), */
               const SizedBox(height: 24),
               _buildButton(context, "My Reservations", () {
                 Navigator.pushNamed(context, '/reservations');

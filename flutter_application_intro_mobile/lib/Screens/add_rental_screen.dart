@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_intro_mobile/Screens/choose_location_page.dart';
 import '../Widgets/base_scaffold.dart';
 import '../Widgets/date_picker.dart';
 import '../models/device_model.dart';
 import '../Services/auth_service.dart';
 import '../Services/device_service.dart'; // DeviceService importeren
+import 'package:latlong2/latlong.dart';
 
 class AddRentalScreen extends StatefulWidget {
   const AddRentalScreen({super.key});
@@ -33,9 +35,11 @@ class _AddRentalScreenState extends State<AddRentalScreen> {
 
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _locationController = TextEditingController();
   final TextEditingController _priceController = TextEditingController();
   final TextEditingController _imageUrlController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
+  double? _latitude;
+  double? _longitude;
 
   Future<void> _pickFromDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -64,6 +68,20 @@ class _AddRentalScreenState extends State<AddRentalScreen> {
     if (picked != null && picked != _availableTo) {
       setState(() {
         _availableTo = picked;
+      });
+    }
+  }
+
+  Future<void> _chooseLocation() async {
+    final LatLng? selectedLocation = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const MapPage()),
+    );
+
+    if (selectedLocation != null) {
+      setState(() {
+        _latitude = selectedLocation.latitude;
+        _longitude = selectedLocation.longitude;
       });
     }
   }
@@ -97,6 +115,13 @@ class _AddRentalScreenState extends State<AddRentalScreen> {
       return;
     }
 
+    if (_latitude == null || _longitude == null) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Please choose a location')));
+      return;
+    }
+
     final currentUser = await AuthService.getCurrentUser();
     if (currentUser == null) {
       ScaffoldMessenger.of(
@@ -115,7 +140,9 @@ class _AddRentalScreenState extends State<AddRentalScreen> {
       title: _titleController.text.trim(),
       description: _descriptionController.text.trim(),
       category: _selectedCategory!,
-      location: _locationController.text.trim(),
+      address: _addressController.text.trim(),
+      latitude: _latitude ?? 0.0, // hier gebruik je de echte coords
+      longitude: _longitude ?? 0.0,
       pricePerDay: price,
       imageUrl: imageUrl,
       ownerId: currentUser.uid,
@@ -155,7 +182,29 @@ class _AddRentalScreenState extends State<AddRentalScreen> {
                 'Description',
                 maxLines: 3,
               ),
-              _buildTextField(_locationController, 'Location'),
+              _buildTextField(_addressController, 'Address'),
+
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ElevatedButton.icon(
+                      onPressed: _chooseLocation,
+                      icon: const Icon(Icons.location_on),
+                      label: const Text('Choose Location'),
+                    ),
+                    if (_latitude != null && _longitude != null)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: Text(
+                          'Selected location: ($_latitude, $_longitude)',
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+
               _buildTextField(
                 _priceController,
                 'Price per day (€)',
