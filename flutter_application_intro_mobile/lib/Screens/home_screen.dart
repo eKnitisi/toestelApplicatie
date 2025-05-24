@@ -25,12 +25,9 @@ class MyHomePage extends StatelessWidget {
                 );
               }),
               const SizedBox(height: 24),
-              /*               _buildButton(context, "Browse appliances (Map)", () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => MapPage()),
-                );
-              }), */
+              _buildButton(context, "View all rentals on map", () {
+                Navigator.pushNamed(context, '/map');
+              }),
               const SizedBox(height: 24),
               _buildButton(context, "My Reservations", () {
                 Navigator.pushNamed(context, '/reservations');

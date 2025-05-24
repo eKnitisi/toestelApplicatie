@@ -75,7 +75,7 @@ class _AddRentalScreenState extends State<AddRentalScreen> {
   Future<void> _chooseLocation() async {
     final LatLng? selectedLocation = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const MapPage()),
+      MaterialPageRoute(builder: (context) => const ChooseLocationPage()),
     );
 
     if (selectedLocation != null) {

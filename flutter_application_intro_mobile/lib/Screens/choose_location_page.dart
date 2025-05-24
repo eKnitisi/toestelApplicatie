@@ -3,14 +3,14 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 
-class MapPage extends StatefulWidget {
-  const MapPage({super.key});
+class ChooseLocationPage extends StatefulWidget {
+  const ChooseLocationPage({super.key});
 
   @override
-  State<MapPage> createState() => _MapPageState();
+  State<ChooseLocationPage> createState() => _ChooseLocationState();
 }
 
-class _MapPageState extends State<MapPage> {
+class _ChooseLocationState extends State<ChooseLocationPage> {
   LatLng? _selectedLocation;
   bool _loadingLocation = true;
 
