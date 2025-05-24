@@ -9,17 +9,35 @@ class AuthService {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
   static final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Hardcoded login voor development
   static Future<void> signInWithEmail(
     String email,
     String password,
     BuildContext context,
   ) async {
     try {
-      await _auth.signInWithEmailAndPassword(
-        email: "tibe@mail.com",
-        password: "test123",
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
       );
+
+      // Fetch Firestore user document
+      DocumentSnapshot<Map<String, dynamic>> doc =
+          await _firestore
+              .collection('users')
+              .doc(userCredential.user!.uid)
+              .get();
+
+      if (!doc.exists || doc.data() == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('User profile not found in Firestore.')),
+        );
+        return;
+      }
+
+      // Optional: validate fields or assign default roles here
+      final data = doc.data()!;
+      final userModel = UserModel.fromMap(doc.id, data);
+      debugPrint('Logged in user: $userModel');
 
       Navigator.pushReplacement(
         context,

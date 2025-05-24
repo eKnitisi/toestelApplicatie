@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_application_intro_mobile/Screens/home_screen.dart';
+import 'package:flutter_application_intro_mobile/Screens/rental_dashboard.dart';
 import 'firebase_options.dart';
 import 'Screens/login_screen.dart';
 
@@ -26,7 +27,8 @@ class MyApp extends StatelessWidget {
         '/home': (context) => MyHomePage(title: 'Home'),
         '/reservations':
             (context) => const MyHomePage(title: 'My Reservations'),
-        '/dashboard': (context) => const MyHomePage(title: 'Rental Dashboard'),
+        '/dashboard':
+            (context) => const RentalDashboard(title: 'Rental Dashboard'),
       },
     );
   }

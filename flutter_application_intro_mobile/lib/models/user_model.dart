@@ -14,15 +14,29 @@ class UserModel {
   });
 
   factory UserModel.fromMap(String id, Map<String, dynamic> map) {
+    String safeString(dynamic value) {
+      if (value == null) return '';
+      if (value is String) return value;
+      return value.toString(); // fallback, just in case
+    }
+
     return UserModel(
       uid: id,
-      email: map['email'] ?? '',
-      name: map['name'] ?? '',
-      role: map['role'] ?? 'huurder',
+      email: safeString(map['email']),
+      name: safeString(map['name']),
+      role:
+          safeString(map['role']).isEmpty
+              ? 'customer'
+              : safeString(map['role']),
     );
   }
 
   Map<String, dynamic> toMap() {
     return {'email': email, 'name': name, 'role': role};
+  }
+
+  @override
+  String toString() {
+    return 'UserModel(uid: $uid, email: $email, name: $name, role: $role)';
   }
 }
