@@ -62,6 +62,33 @@ class _CreateReservationScreenState extends State<CreateReservationScreen> {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(const SnackBar(content: Text('User not logged in')));
+      setState(() {
+        _isSubmitting = false;
+      });
+      return;
+    }
+
+    final reservations = await RentalService.getRentalsForDevice(
+      widget.device.id,
+    );
+
+    bool overlaps = reservations.any(
+      (r) =>
+          !(_endDate!.isBefore(r.startDate) || _startDate!.isAfter(r.endDate)),
+    );
+
+    if (overlaps) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Selected dates overlap with an existing reservation. Please choose different dates.',
+          ),
+          backgroundColor: Colors.red,
+        ),
+      );
+      setState(() {
+        _isSubmitting = false;
+      });
       return;
     }
 
@@ -80,6 +107,10 @@ class _CreateReservationScreenState extends State<CreateReservationScreen> {
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(const SnackBar(content: Text('Reservation requested!')));
+
+    setState(() {
+      _isSubmitting = false;
+    });
 
     Navigator.pop(context);
   }

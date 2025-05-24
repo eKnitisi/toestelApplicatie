@@ -3,6 +3,9 @@ import 'package:flutter_application_intro_mobile/Widgets/base_scaffold.dart';
 import '../models/device_model.dart';
 import '../Services/device_service.dart';
 import '../Screens/device_detail_screen.dart';
+import '../Services/auth_service.dart';
+import '../Services/rental_service.dart';
+import '../models/reservation_model.dart';
 
 class ListingsScreen extends StatefulWidget {
   const ListingsScreen({Key? key}) : super(key: key);
@@ -44,11 +47,32 @@ class _ListingsScreenState extends State<ListingsScreen> {
     setState(() {
       _loading = true;
     });
+
     try {
+      final user = await AuthService.getCurrentUser();
+      if (user == null) {
+        throw Exception('User not logged in');
+      }
+
       final devices = await DeviceService.getDevices();
+      List<DeviceModel> filtered = [];
+
+      for (final device in devices) {
+        if (device.ownerId == user.uid) {
+          continue;
+        }
+
+        final reservations = await RentalService.getRentalsForDevice(device.id);
+        bool hasAvailableDates = _checkAvailability(device, reservations);
+
+        if (hasAvailableDates) {
+          filtered.add(device);
+        }
+      }
+
       setState(() {
         _allDevices = devices;
-        _filteredDevices = devices;
+        _filteredDevices = filtered;
         _loading = false;
       });
     } catch (e) {
@@ -59,6 +83,35 @@ class _ListingsScreenState extends State<ListingsScreen> {
         context,
       ).showSnackBar(SnackBar(content: Text('Error loading devices: $e')));
     }
+  }
+
+  bool _checkAvailability(
+    DeviceModel device,
+    List<ReservationModel> reservations,
+  ) {
+    final reservedDays = <DateTime>{};
+    for (var r in reservations) {
+      for (
+        DateTime d = r.startDate;
+        !d.isAfter(r.endDate);
+        d = d.add(Duration(days: 1))
+      ) {
+        reservedDays.add(DateTime(d.year, d.month, d.day));
+      }
+    }
+
+    for (
+      DateTime d = device.availableFrom;
+      !d.isAfter(device.availableTo);
+      d = d.add(Duration(days: 1))
+    ) {
+      final day = DateTime(d.year, d.month, d.day);
+      if (!reservedDays.contains(day)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   void _applyFilters() {
